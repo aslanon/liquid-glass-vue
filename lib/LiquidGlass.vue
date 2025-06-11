@@ -266,6 +266,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
+import { useLiquidGlass } from "~/composables/useLiquidGlass";
 
 interface Props {
 	displacementScale?: number;
