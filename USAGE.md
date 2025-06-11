@@ -2,18 +2,18 @@
 
 ## 🔗 Links
 
-- **GitHub Repository**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue)
-- **NPM Package**: [https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue](https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue)
-- **Issues**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues)
+- **GitHub Repository**: [https://github.com/aslanon/@aslanon/liquid-glass-vue](https://github.com/aslanon/@aslanon/liquid-glass-vue)
+- **NPM Package**: [https://www.npmjs.com/package/@aslanon/liquid-glass-vue](https://www.npmjs.com/package/@aslanon/liquid-glass-vue)
+- **Issues**: [https://github.com/aslanon/@aslanon/liquid-glass-vue/issues](https://github.com/aslanon/@aslanon/liquid-glass-vue/issues)
 
 ## Installation
 
 ```bash
-npm install @aslanonurur/liquid-glass-vue
+npm install @aslanon/liquid-glass-vue
 # or
-yarn add @aslanonurur/liquid-glass-vue
+yarn add @aslanon/liquid-glass-vue
 # or
-pnpm add @aslanonurur/liquid-glass-vue
+pnpm add @aslanon/liquid-glass-vue
 ```
 
 ## Basic Usage in Vue 3
@@ -31,7 +31,7 @@ pnpm add @aslanonurur/liquid-glass-vue
 </template>
 
 <script setup>
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 </script>
 ```
 
@@ -40,7 +40,7 @@ import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
 ### 1. Install the package
 
 ```bash
-npm install @aslanonurur/liquid-glass-vue
+npm install @aslanon/liquid-glass-vue
 ```
 
 ### 2. Create a plugin (optional for auto-import)
@@ -48,7 +48,7 @@ npm install @aslanonurur/liquid-glass-vue
 Create `plugins/liquid-glass.client.ts`:
 
 ```typescript
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 
 export default defineNuxtPlugin(() => {
 	return {
@@ -74,7 +74,7 @@ export default defineNuxtPlugin(() => {
 </template>
 
 <script setup>
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 </script>
 ```
 
@@ -97,7 +97,7 @@ import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
 
 <script setup>
 import { ref } from "vue";
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 
 const globalMouse = ref({ x: 0, y: 0 });
 
@@ -141,7 +141,7 @@ const updateGlobalMouse = (e: MouseEvent) => {
 </template>
 
 <script setup>
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 </script>
 ```
 
@@ -163,8 +163,8 @@ import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
-import type { LiquidGlassProps } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
+import type { LiquidGlassProps } from "@aslanon/liquid-glass-vue";
 
 interface Settings {
 	displacement: number;
@@ -188,7 +188,7 @@ const handleClick = () => {
 
 ```vue
 <script setup>
-import { useLiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { useLiquidGlass } from "@aslanon/liquid-glass-vue";
 
 const { displacementMap, polarDisplacementMap, generateId } = useLiquidGlass();
 
@@ -222,7 +222,7 @@ The component works well with TailwindCSS and other CSS frameworks:
 ```vue
 <script setup>
 import { computed } from "vue";
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 
 const isMobile = computed(() => {
 	return typeof window !== "undefined" && window.innerWidth < 768;
@@ -250,5 +250,5 @@ const glassProps = computed(() => ({
 
 ### TypeScript errors
 
-- Make sure to import types: `import type { LiquidGlassProps } from '@aslanonurur/liquid-glass-vue'`
+- Make sure to import types: `import type { LiquidGlassProps } from '@aslanon/liquid-glass-vue'`
 - Check that Vue 3 types are properly installed

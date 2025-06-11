@@ -1,5 +1,5 @@
 {
-	"name": "@aslanonur/liquid-glass-vue",
+	"name": "@aslanon/liquid-glass-vue",
 	"version": "1.0.0",
 	"description": "Apple's Liquid Glass effect implementation for Vue 3 + Nuxt 3. A liquid glass component with real-time displacement mapping, chromatic aberration, and glassmorphism effects.",
 	"private": false,
@@ -71,10 +71,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/aslanonur/liquid-glass-vue.git"
+		"url": "https://github.com/aslanon/liquid-glass-vue.git"
 	},
-	"homepage": "https://github.com/aslanonur/liquid-glass-vue#readme",
+	"homepage": "https://github.com/aslanon/liquid-glass-vue#readme",
 	"bugs": {
-		"url": "https://github.com/aslanonur/liquid-glass-vue/issues"
+		"url": "https://github.com/aslanon/liquid-glass-vue/issues"
 	}
 }

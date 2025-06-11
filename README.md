@@ -9,18 +9,18 @@ Apple's Liquid Glass effect implementation for Vue 3 + Nuxt 3. A liquid glass co
 ## 🚀 Installation
 
 ```bash
-npm install @aslanonurur/@aslanonurur/liquid-glass-vue
+npm install @aslanon/@aslanon/liquid-glass-vue
 # or
-yarn add @aslanonurur/@aslanonurur/liquid-glass-vue
+yarn add @aslanon/@aslanon/liquid-glass-vue
 # or
-pnpm add @aslanonurur/@aslanonurur/liquid-glass-vue
+pnpm add @aslanon/@aslanon/liquid-glass-vue
 ```
 
 ## 🔗 Links
 
-- **GitHub Repository**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue)
-- **NPM Package**: [https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue](https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue)
-- **Issues**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues)
+- **GitHub Repository**: [https://github.com/aslanon/@aslanon/liquid-glass-vue](https://github.com/aslanon/@aslanon/liquid-glass-vue)
+- **NPM Package**: [https://www.npmjs.com/package/@aslanon/liquid-glass-vue](https://www.npmjs.com/package/@aslanon/liquid-glass-vue)
+- **Issues**: [https://github.com/aslanon/@aslanon/liquid-glass-vue/issues](https://github.com/aslanon/@aslanon/liquid-glass-vue/issues)
 
 ## 📖 Usage
 
@@ -37,7 +37,7 @@ pnpm add @aslanonurur/@aslanonurur/liquid-glass-vue
 </template>
 
 <script setup>
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 </script>
 ```
 
@@ -60,7 +60,7 @@ import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
 </template>
 
 <script setup>
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 </script>
 ```
 
@@ -77,7 +77,7 @@ import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
 
 <script setup>
 import { ref } from "vue";
-import { LiquidGlass } from "@aslanonurur/liquid-glass-vue";
+import { LiquidGlass } from "@aslanon/liquid-glass-vue";
 
 const globalMouse = ref({ x: 0, y: 0 });
 
@@ -129,7 +129,10 @@ const updateMousePos = (e) => {
 This package includes full TypeScript support with type definitions.
 
 ```typescript
-import type { LiquidGlassProps, MousePosition } from "@aslanonurur/liquid-glass-vue";
+import type {
+	LiquidGlassProps,
+	MousePosition,
+} from "@aslanon/liquid-glass-vue";
 ```
 
 ## 📄 License
@@ -138,6 +141,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🔗 Links
 
-- **GitHub Repository**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue)
-- **NPM Package**: [https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue](https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue)
-- **Issues**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues)
+- **GitHub Repository**: [https://github.com/aslanon/@aslanon/liquid-glass-vue](https://github.com/aslanon/@aslanon/liquid-glass-vue)
+- **NPM Package**: [https://www.npmjs.com/package/@aslanon/liquid-glass-vue](https://www.npmjs.com/package/@aslanon/liquid-glass-vue)
+- **Issues**: [https://github.com/aslanon/@aslanon/liquid-glass-vue/issues](https://github.com/aslanon/@aslanon/liquid-glass-vue/issues)
