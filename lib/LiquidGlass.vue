@@ -36,6 +36,10 @@
 			}`"
 			:style="baseStyle"
 			@click="props.onClick"
+			@mouseenter="handleMouseEnter"
+			@mouseleave="handleMouseLeave"
+			@mousedown="handleMouseDown"
+			@mouseup="handleMouseUp"
 		>
 			<!-- React'teki exact SVG Filter structure -->
 			<svg
@@ -411,6 +415,7 @@ interface Props {
 	style?: Record<string, any>;
 	overLight?: boolean;
 	mode?: "standard" | "polar";
+	positioning?: "fixed" | "relative";
 	onClick?: () => void;
 	onMouseEnter?: () => void;
 	onMouseLeave?: () => void;
@@ -423,13 +428,14 @@ const props = withDefaults(defineProps<Props>(), {
 	blurAmount: 0.0625,
 	saturation: 140,
 	aberrationIntensity: 2,
-	elasticity: 0.15,
+	elasticity: 0.5,
 	cornerRadius: 999,
 	className: "",
 	padding: "24px 32px",
 	overLight: false,
 	style: () => ({}),
 	mode: "standard",
+	positioning: "relative",
 });
 
 const { displacementMap, polarDisplacementMap, generateId, isFirefox } =
@@ -438,10 +444,11 @@ const { displacementMap, polarDisplacementMap, generateId, isFirefox } =
 const glassRef = ref<HTMLElement>();
 const isHovered = ref(false);
 const active = ref(false);
-const glassSize = ref({ width: 270, height: 69 });
+const glassSize = ref({ width: 120, height: 40 });
 const internalGlobalMousePos = ref({ x: 100, y: 100 });
 const internalMouseOffset = ref({ x: 0, y: 0 });
 const filterKey = ref(0);
+const resizeObserver = ref<ResizeObserver | null>(null);
 
 const filterId = generateId();
 console.log("Generated Filter ID:", filterId);
@@ -599,45 +606,80 @@ const calculateElasticTranslation = () => {
 		return { x: 0, y: 0 };
 	}
 
+	// Eğer mouse hover durumunda değilse, translation'ı sıfırla
+	if (!isHovered.value) {
+		return { x: 0, y: 0 };
+	}
+
 	const fadeInFactor = calculateFadeInFactor();
 	const rect = glassRef.value.getBoundingClientRect();
 	const pillCenterX = rect.left + rect.width / 2;
 	const pillCenterY = rect.top + rect.height / 2;
 
+	// Mouse hover durumunda daha responsive hareket
+	const responsiveMultiplier = isHovered.value ? 0.15 : 0.1;
+	const elasticityMultiplier = props.elasticity * responsiveMultiplier;
+
 	return {
 		x:
 			(globalMousePos.value.x - pillCenterX) *
-			props.elasticity *
-			0.1 *
+			elasticityMultiplier *
 			fadeInFactor,
 		y:
 			(globalMousePos.value.y - pillCenterY) *
-			props.elasticity *
-			0.1 *
+			elasticityMultiplier *
 			fadeInFactor,
 	};
 };
 
 const transformStyle = computed(() => {
 	const translation = calculateElasticTranslation();
-	return `translate(calc(-50% + ${translation.x}px), calc(-50% + ${
-		translation.y
-	}px)) ${
-		active.value && props.onClick ? "scale(0.96)" : calculateDirectionalScale()
-	}`;
+
+	if (props.positioning === "relative") {
+		return `translate(${translation.x}px, ${translation.y}px) ${
+			active.value && props.onClick
+				? "scale(0.96)"
+				: calculateDirectionalScale()
+		}`;
+	} else {
+		return `translate(calc(-50% + ${translation.x}px), calc(-50% + ${
+			translation.y
+		}px)) ${
+			active.value && props.onClick
+				? "scale(0.96)"
+				: calculateDirectionalScale()
+		}`;
+	}
 });
 
-const baseStyle = computed(() => ({
-	...props.style,
-	transform: transformStyle.value,
-	transition: "all ease-out 0.2s",
-}));
+const baseStyle = computed(() => {
+	// Mouse hover durumuna göre farklı transition süreleri
+	const transitionDuration = isHovered.value ? "0.1s" : "0.4s";
+	const transitionEasing = isHovered.value ? "ease-out" : "ease-in-out";
 
-const positionStyles = computed(() => ({
-	position: (baseStyle.value as any).position || "relative",
-	top: (baseStyle.value as any).top || "50%",
-	left: (baseStyle.value as any).left || "50%",
-}));
+	return {
+		...props.style,
+		transform: transformStyle.value,
+		transition: `all ${transitionEasing} ${transitionDuration}`,
+	};
+});
+
+const positionStyles = computed(() => {
+	if (props.positioning === "relative") {
+		return {
+			position: "relative" as const,
+			top: "auto" as const,
+			left: "auto" as const,
+		};
+	} else {
+		return {
+			position: (baseStyle.value as any).position || ("fixed" as const),
+			top: (baseStyle.value as any).top || "50%",
+			left: (baseStyle.value as any).left || "50%",
+			zIndex: (baseStyle.value as any).zIndex || 50,
+		};
+	}
+});
 
 // Internal mouse tracking
 const handleMouseMove = (e: MouseEvent) => {
@@ -663,7 +705,48 @@ const handleMouseMove = (e: MouseEvent) => {
 const updateGlassSize = () => {
 	if (glassRef.value) {
 		const rect = glassRef.value.getBoundingClientRect();
-		glassSize.value = { width: rect.width, height: rect.height };
+		const newSize = { width: rect.width, height: rect.height };
+
+		// Sadece boyut gerçekten değiştiyse güncelle
+		if (
+			glassSize.value.width !== newSize.width ||
+			glassSize.value.height !== newSize.height
+		) {
+			glassSize.value = newSize;
+
+			// Relative positioning'de filter'ı yenile
+			if (props.positioning === "relative") {
+				nextTick(() => {
+					filterKey.value++;
+				});
+			}
+		}
+	}
+};
+
+// ResizeObserver setup for relative positioning
+const setupResizeObserver = () => {
+	if (
+		typeof window !== "undefined" &&
+		window.ResizeObserver &&
+		glassRef.value
+	) {
+		resizeObserver.value = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const { width, height } = entry.contentRect;
+				const newSize = { width, height };
+
+				if (
+					glassSize.value.width !== newSize.width ||
+					glassSize.value.height !== newSize.height
+				) {
+					glassSize.value = newSize;
+					filterKey.value++;
+				}
+			}
+		});
+
+		resizeObserver.value.observe(glassRef.value);
 	}
 };
 
@@ -673,6 +756,11 @@ const handleMouseEnter = () => {
 
 const handleMouseLeave = () => {
 	isHovered.value = false;
+	// Mouse leave olduğunda internal mouse position'ı da sıfırla
+	if (!props.globalMousePos) {
+		internalGlobalMousePos.value = { x: 0, y: 0 };
+		internalMouseOffset.value = { x: 0, y: 0 };
+	}
 };
 
 const handleMouseDown = () => {
@@ -718,6 +806,15 @@ onMounted(() => {
 	nextTick(() => {
 		updateGlassSize();
 
+		// Relative positioning için ResizeObserver kullan
+		if (props.positioning === "relative") {
+			setupResizeObserver();
+			// Relative positioning'de daha sık güncelle
+			setTimeout(updateGlassSize, 10);
+			setTimeout(updateGlassSize, 50);
+			setTimeout(updateGlassSize, 100);
+		}
+
 		// Set up mouse tracking if no external mouse position is provided
 		if (!props.globalMousePos && !props.mouseOffset) {
 			const container = props.mouseContainer || glassRef.value;
@@ -755,6 +852,12 @@ onMounted(() => {
 
 // Component unmount olduğunda temizle
 onUnmounted(() => {
+	// ResizeObserver'ı temizle
+	if (resizeObserver.value) {
+		resizeObserver.value.disconnect();
+		resizeObserver.value = null;
+	}
+
 	// Original onUnmounted logic
 	if (!props.globalMousePos && !props.mouseOffset) {
 		const container = props.mouseContainer || glassRef.value;
@@ -776,6 +879,24 @@ watch(
 			}
 			if (newContainer) {
 				newContainer.addEventListener("mousemove", handleMouseMove);
+			}
+		}
+	}
+);
+
+// Watch for positioning changes
+watch(
+	() => props.positioning,
+	(newPositioning) => {
+		if (newPositioning === "relative") {
+			nextTick(() => {
+				updateGlassSize();
+				setupResizeObserver();
+			});
+		} else {
+			if (resizeObserver.value) {
+				resizeObserver.value.disconnect();
+				resizeObserver.value = null;
 			}
 		}
 	}

@@ -103,6 +103,7 @@ const updateMousePos = (e) => {
 | `cornerRadius`        | `number`                 | `999`         | Corner roundness (0-100, 999=fully rounded) |
 | `overLight`           | `boolean`                | `false`       | Dark tint for light backgrounds             |
 | `mode`                | `'standard' \| 'polar'`  | `'standard'`  | Displacement pattern mode                   |
+| `positioning`         | `'fixed' \| 'relative'`  | `'relative'`  | Positioning mode (fixed or relative)        |
 | `globalMousePos`      | `{x: number, y: number}` | `undefined`   | External mouse position                     |
 | `mouseOffset`         | `{x: number, y: number}` | `undefined`   | External mouse offset                       |
 | `mouseContainer`      | `HTMLElement`            | `undefined`   | Mouse tracking container                    |
@@ -125,6 +126,33 @@ const updateMousePos = (e) => {
 ```vue
 <LiquidGlass :over-light="true">
   <!-- Dark glass effect for light backgrounds -->
+</LiquidGlass>
+```
+
+### Relative Positioning (Inline Elements)
+
+```vue
+<template>
+	<div class="flex gap-4">
+		<LiquidGlass positioning="relative" class="inline-block">
+			<button>Save</button>
+		</LiquidGlass>
+
+		<LiquidGlass positioning="relative" class="inline-block">
+			<button>Cancel</button>
+		</LiquidGlass>
+	</div>
+</template>
+```
+
+### Fixed Positioning (Overlay Elements)
+
+```vue
+<LiquidGlass
+	positioning="fixed"
+	:style="{ top: '50%', left: '50%', zIndex: 50 }"
+>
+  <!-- Centered overlay content -->
 </LiquidGlass>
 ```
 

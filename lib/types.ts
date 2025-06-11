@@ -9,6 +9,7 @@ export interface GlassSize {
 }
 
 export type DisplacementMode = "standard" | "polar";
+export type PositioningMode = "fixed" | "relative";
 
 export interface LiquidGlassProps {
 	displacementScale?: number;
@@ -19,6 +20,7 @@ export interface LiquidGlassProps {
 	cornerRadius?: number;
 	overLight?: boolean;
 	mode?: DisplacementMode;
+	positioning?: PositioningMode;
 	globalMousePos?: MousePosition;
 	mouseOffset?: MousePosition;
 	mouseContainer?: HTMLElement;
