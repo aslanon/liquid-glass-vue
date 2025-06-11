@@ -266,7 +266,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
-import { useLiquidGlass } from "~/composables/useLiquidGlass";
+import { useLiquidGlass } from "./useLiquidGlass";
 
 interface Props {
 	displacementScale?: number;
@@ -353,10 +353,11 @@ const backdropStyle = computed(() => {
 	filterKey.value;
 
 	const isFirefoxBrowser =
-		process.client && navigator.userAgent.toLowerCase().includes("firefox");
+		typeof window !== "undefined" &&
+		navigator.userAgent.toLowerCase().includes("firefox");
 	console.log("Firefox detection:", {
 		isFirefoxBrowser,
-		processClient: process.client,
+		processClient: typeof window !== "undefined",
 		filterKey: filterKey.value,
 	});
 
@@ -565,7 +566,7 @@ watch(
 		console.log("Props changed, forcing filter refresh...");
 		filterKey.value++; // Force reactivity
 
-		if (process.client && glassRef.value) {
+		if (typeof window !== "undefined" && glassRef.value) {
 			nextTick(() => {
 				const glassElement = glassRef.value?.querySelector(".glass__warp");
 				if (glassElement) {
