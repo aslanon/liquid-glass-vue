@@ -1,0 +1,48 @@
+# Development files
+.nuxt/
+.output/
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Demo files
+pages/
+assets/
+public/
+app.vue
+nuxt.config.ts
+tailwind.config.js
+
+# Build tools
+vite.config.ts
+tsconfig.json
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+*.test.*
+*.spec.*
+
+# Temporary
+tmp/
+temp/ 

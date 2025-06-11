@@ -65,7 +65,7 @@
 						</div>
 						<span class="text-lg font-semibold text-white">Normal Glass</span>
 					</div>
-					<p class="text-sm text-white/80">Koyu arka planlar için</p>
+					<p class="text-sm text-white/80">Dark background</p>
 				</div>
 			</LiquidGlass>
 
@@ -106,20 +106,20 @@
 						</div>
 						<span class="text-lg font-semibold text-white">Dark Tint</span>
 					</div>
-					<p class="text-sm text-white/80">Açık arka planlar için</p>
+					<p class="text-sm text-white/80">Light background</p>
 				</div>
 			</LiquidGlass>
 		</div>
 
 		<!-- Right Panel - Simple Controls -->
 		<div
-			class="col-start-3 fixed left-8 top-8 rounded-xl bg-black overflow-y-auto backdrop-blur-md border-l border-white/10 p-6 flex flex-col"
+			class="col-start-3 fixed left-8 top-8 rounded-3xl bg-black overflow-y-auto backdrop-blur-md border-l border-white/10 p-6 flex flex-col"
 		>
-			<div class="mb-8">
-				<h2 class="text-2xl font-bold text-white mb-2">Liquid Glass</h2>
-				<p class="text-white/60 text-sm">
-					İki komponenti de kontrol eden ayarlar
+			<div class="mb-8 w-[300px]">
+				<p class="text-white/60 mb-2 text-right text-sm">
+					<a href="https://github.com/aslanon/liquid-glass-vue">GitHub Repo</a>
 				</p>
+				<h2 class="text-2xl font-bold text-white mb-2">Liquid Glass</h2>
 			</div>
 
 			<div class="space-y-6 flex-1">

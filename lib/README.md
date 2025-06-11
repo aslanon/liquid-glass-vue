@@ -9,18 +9,12 @@ Apple's Liquid Glass effect implementation for Vue 3 + Nuxt 3. A liquid glass co
 ## 🚀 Installation
 
 ```bash
-npm install @aslanonurur/@aslanonurur/liquid-glass-vue
+npm install @aslanonurur/liquid-glass-vue
 # or
-yarn add @aslanonurur/@aslanonurur/liquid-glass-vue
+yarn add @aslanonurur/liquid-glass-vue
 # or
-pnpm add @aslanonurur/@aslanonurur/liquid-glass-vue
+pnpm add @aslanonurur/liquid-glass-vue
 ```
-
-## 🔗 Links
-
-- **GitHub Repository**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue)
-- **NPM Package**: [https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue](https://www.npmjs.com/package/@aslanonurur/liquid-glass-vue)
-- **Issues**: [https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues](https://github.com/aslanonur/@aslanonurur/liquid-glass-vue/issues)
 
 ## 📖 Usage
 
