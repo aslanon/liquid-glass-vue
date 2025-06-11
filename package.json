@@ -1,6 +1,6 @@
 {
 	"name": "@aslanonur/liquid-glass-vue",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Apple's Liquid Glass effect implementation for Vue 3 + Nuxt 3. A liquid glass component with real-time displacement mapping, chromatic aberration, and glassmorphism effects.",
 	"private": false,
 	"type": "module",
