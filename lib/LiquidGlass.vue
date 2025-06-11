@@ -3,25 +3,12 @@
 		<!-- Over light effect - React'teki exact pattern -->
 		<div
 			:class="`bg-black transition-all duration-150 ease-in-out pointer-events-none ${
-				props.overLight ? 'opacity-0' : 'opacity-0'
+				props.overLight ? 'opacity-20' : 'opacity-0'
 			}`"
 			:style="{
 				...positionStyles,
 				height: glassSize.height + 'px',
-				width: glassSize.width + 'px',
-				borderRadius: `${props.cornerRadius}px`,
-				transform: baseStyle.transform,
-				transition: baseStyle.transition,
-			}"
-		/>
-		<div
-			:class="`bg-black transition-all duration-150 ease-in-out pointer-events-none mix-blend-overlay ${
-				props.overLight ? 'opacity-0' : 'opacity-0'
-			}`"
-			:style="{
-				...positionStyles,
-				height: glassSize.height + 'px',
-				width: glassSize.width + 'px',
+				width: 'auto',
 				borderRadius: `${props.cornerRadius}px`,
 				transform: baseStyle.transform,
 				transition: baseStyle.transition,
@@ -36,10 +23,6 @@
 			}`"
 			:style="baseStyle"
 			@click="props.onClick"
-			@mouseenter="handleMouseEnter"
-			@mouseleave="handleMouseLeave"
-			@mousedown="handleMouseDown"
-			@mouseup="handleMouseUp"
 		>
 			<!-- React'teki exact SVG Filter structure -->
 			<svg
@@ -278,124 +261,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Border layer 1 - extracted from glass container -->
-		<span
-			:style="{
-				...positionStyles,
-				height: glassSize.height + 'px',
-				width: glassSize.width + 'px',
-				borderRadius: `${props.cornerRadius}px`,
-				transform: baseStyle.transform,
-				transition: baseStyle.transition,
-				pointerEvents: 'none',
-				mixBlendMode: 'screen',
-				opacity: 0.2,
-				padding: '1.5px',
-				WebkitMask:
-					'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-				WebkitMaskComposite: 'xor',
-				maskComposite: 'exclude',
-				boxShadow:
-					'0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-				background: `linear-gradient(
-					${135 + mouseOffset.x * 1.2}deg,
-					rgba(255, 255, 255, 0.0) 0%,
-					rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(
-					10,
-					33 + mouseOffset.y * 0.3
-				)}%,
-					rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(
-					90,
-					66 + mouseOffset.y * 0.4
-				)}%,
-					rgba(255, 255, 255, 0.0) 100%
-				)`,
-			}"
-		/>
-
-		<!-- Border layer 2 - duplicate with mix-blend-overlay -->
-		<span
-			:style="{
-				...positionStyles,
-				height: glassSize.height + 'px',
-				width: glassSize.width + 'px',
-				borderRadius: `${props.cornerRadius}px`,
-				transform: baseStyle.transform,
-				transition: baseStyle.transition,
-				pointerEvents: 'none',
-				mixBlendMode: 'overlay',
-				padding: '1.5px',
-				WebkitMask:
-					'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-				WebkitMaskComposite: 'xor',
-				maskComposite: 'exclude',
-				boxShadow:
-					'0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-				background: `linear-gradient(
-					${135 + mouseOffset.x * 1.2}deg,
-					rgba(255, 255, 255, 0.0) 0%,
-					rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(
-					10,
-					33 + mouseOffset.y * 0.3
-				)}%,
-					rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(
-					90,
-					66 + mouseOffset.y * 0.4
-				)}%,
-					rgba(255, 255, 255, 0.0) 100%
-				)`,
-			}"
-		/>
-
-		<!-- Hover effects - only show when onClick is provided -->
-		<template v-if="Boolean(props.onClick)">
-			<div
-				:style="{
-					...positionStyles,
-					height: glassSize.height + 'px',
-					width: glassSize.width + 1 + 'px',
-					borderRadius: `${props.cornerRadius}px`,
-					transform: baseStyle.transform,
-					pointerEvents: 'none',
-					transition: 'all 0.2s ease-out',
-					opacity: isHovered || active ? 0.5 : 0,
-					backgroundImage:
-						'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%)',
-					mixBlendMode: 'overlay',
-				}"
-			/>
-			<div
-				:style="{
-					...positionStyles,
-					height: glassSize.height + 'px',
-					width: glassSize.width + 1 + 'px',
-					borderRadius: `${props.cornerRadius}px`,
-					transform: baseStyle.transform,
-					pointerEvents: 'none',
-					transition: 'all 0.2s ease-out',
-					opacity: active ? 0.5 : 0,
-					backgroundImage:
-						'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%)',
-					mixBlendMode: 'overlay',
-				}"
-			/>
-			<div
-				:style="{
-					...positionStyles,
-					height: glassSize.height + 'px',
-					width: glassSize.width + 1 + 'px',
-					borderRadius: `${props.cornerRadius}px`,
-					transform: baseStyle.transform,
-					pointerEvents: 'none',
-					transition: 'all 0.2s ease-out',
-					opacity: isHovered ? 0.4 : active ? 0.8 : 0,
-					backgroundImage:
-						'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)',
-					mixBlendMode: 'overlay',
-				}"
-			/>
-		</template>
 	</div>
 </template>
 
@@ -604,11 +469,6 @@ const calculateElasticTranslation = () => {
 		return { x: 0, y: 0 };
 	}
 
-	// Eğer mouse hover durumunda değilse, translation'ı sıfırla
-	if (!isHovered.value) {
-		return { x: 0, y: 0 };
-	}
-
 	const fadeInFactor = calculateFadeInFactor();
 	const rect = glassRef.value.getBoundingClientRect();
 	const pillCenterX = rect.left + rect.width / 2;
@@ -637,17 +497,11 @@ const transformStyle = computed(() => {
 	}`;
 });
 
-const baseStyle = computed(() => {
-	// Mouse hover durumuna göre farklı transition süreleri
-	const transitionDuration = isHovered.value ? "0.1s" : "0.4s";
-	const transitionEasing = isHovered.value ? "ease-out" : "ease-in-out";
-
-	return {
-		...props.style,
-		transform: transformStyle.value,
-		transition: `all ${transitionEasing} ${transitionDuration}`,
-	};
-});
+const baseStyle = computed(() => ({
+	...props.style,
+	transform: transformStyle.value,
+	transition: "all ease-out 0.2s",
+}));
 
 const positionStyles = computed(() => ({
 	position: (baseStyle.value as any).position || "relative",
@@ -689,11 +543,6 @@ const handleMouseEnter = () => {
 
 const handleMouseLeave = () => {
 	isHovered.value = false;
-	// Mouse leave olduğunda internal mouse position'ı da sıfırla
-	if (!props.globalMousePos) {
-		internalGlobalMousePos.value = { x: 0, y: 0 };
-		internalMouseOffset.value = { x: 0, y: 0 };
-	}
 };
 
 const handleMouseDown = () => {
