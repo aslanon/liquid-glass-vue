@@ -45,6 +45,55 @@ import { LiquidGlass } from "@aslanonur/liquid-glass-vue";
 </script>
 ```
 
+### Button Mode
+
+```vue
+<template>
+	<!-- Clickable Button -->
+	<LiquidGlass :on-click="handleClick" :elasticity="0.8" padding="16px 24px">
+		<div class="flex items-center gap-2">
+			<Icon name="arrow-right" />
+			<span>Click Me</span>
+		</div>
+	</LiquidGlass>
+
+	<!-- Inline Buttons -->
+	<div class="flex gap-3">
+		<LiquidGlass
+			:on-click="() => save()"
+			:corner-radius="20"
+			padding="12px 20px"
+		>
+			<span>Save</span>
+		</LiquidGlass>
+
+		<LiquidGlass
+			:on-click="() => cancel()"
+			:corner-radius="20"
+			padding="12px 20px"
+		>
+			<span>Cancel</span>
+		</LiquidGlass>
+	</div>
+</template>
+
+<script setup>
+import { LiquidGlass } from "@aslanonur/liquid-glass-vue";
+
+const handleClick = () => {
+	console.log("Button clicked!");
+};
+
+const save = () => {
+	// Save logic
+};
+
+const cancel = () => {
+	// Cancel logic
+};
+</script>
+```
+
 ### With Custom Props
 
 ```vue
@@ -104,6 +153,7 @@ const updateMousePos = (e) => {
 | `overLight`           | `boolean`                | `false`       | Dark tint for light backgrounds             |
 | `mode`                | `'standard' \| 'polar'`  | `'standard'`  | Displacement pattern mode                   |
 | `positioning`         | `'fixed' \| 'relative'`  | `'relative'`  | Positioning mode (fixed or relative)        |
+| `onClick`             | `() => void`             | `undefined`   | Click handler (enables button mode)         |
 | `globalMousePos`      | `{x: number, y: number}` | `undefined`   | External mouse position                     |
 | `mouseOffset`         | `{x: number, y: number}` | `undefined`   | External mouse offset                       |
 | `mouseContainer`      | `HTMLElement`            | `undefined`   | Mouse tracking container                    |
@@ -127,6 +177,30 @@ const updateMousePos = (e) => {
 <LiquidGlass :over-light="true">
   <!-- Dark glass effect for light backgrounds -->
 </LiquidGlass>
+```
+
+### Button Mode Features
+
+When you provide an `onClick` prop, the component automatically enables button mode with:
+
+- **Hover Effects**: Subtle glow and highlight effects on hover
+- **Active States**: Visual feedback when pressed
+- **Cursor Pointer**: Automatic cursor change to indicate clickability
+- **Enhanced Elasticity**: More responsive mouse interactions
+- **Multiple Border Layers**: Advanced visual depth with screen and overlay blend modes
+
+```vue
+<template>
+	<!-- Button with enhanced effects -->
+	<LiquidGlass :on-click="handleClick" :elasticity="0.8" :over-light="false">
+		<span>Interactive Button</span>
+	</LiquidGlass>
+
+	<!-- Over light button -->
+	<LiquidGlass :on-click="handleClick" :over-light="true">
+		<span>Over Light Button</span>
+	</LiquidGlass>
+</template>
 ```
 
 ### Relative Positioning (Inline Elements)

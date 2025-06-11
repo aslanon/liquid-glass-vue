@@ -43,7 +43,7 @@
 				:mode="settings.mode"
 				:style="{
 					position: 'fixed',
-					top: '20%',
+					top: '15%',
 					left: '50%',
 					zIndex: 50,
 				}"
@@ -82,7 +82,7 @@
 				:mode="settings.mode"
 				:style="{
 					position: 'fixed',
-					top: '35%',
+					top: '30%',
 					left: '50%',
 					zIndex: 50,
 				}"
@@ -109,13 +109,51 @@
 					<p class="text-sm text-white/80">Light background</p>
 				</div>
 			</LiquidGlass>
+
+			<!-- Button Mode Examples -->
+			<div
+				class="fixed top-[45%] left-[50%] transform -translate-x-1/2 z-50 flex flex-col gap-6 items-center"
+			>
+				<!-- Clickable Button -->
+				<LiquidGlass
+					:displacement-scale="settings.displacementScale * 0.7"
+					:blur-amount="settings.blurAmount"
+					:saturation="settings.saturation"
+					:aberration-intensity="settings.aberrationIntensity"
+					:elasticity="settings.elasticity * 2"
+					:corner-radius="settings.cornerRadius"
+					:mouse-container="containerRef"
+					:over-light="false"
+					:mode="settings.mode"
+					:on-click="handleButtonClick"
+					padding="16px 24px"
+					:style="{
+						position: 'relative',
+					}"
+				>
+					<div class="flex items-center gap-2">
+						<svg
+							class="w-4 h-4 text-white"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+						<span class="text-sm font-medium text-white">Click Me</span>
+					</div>
+				</LiquidGlass>
+			</div>
 		</div>
 
 		<!-- Right Panel - Simple Controls -->
 		<div
 			class="col-start-3 fixed left-8 top-8 rounded-3xl bg-black overflow-y-auto backdrop-blur-md border-l border-white/10 p-6 flex flex-col"
 		>
-			<div class="mb-8 w-[300px]">
+			<div class="mb-3 w-[300px]">
 				<p class="text-white/60 mb-2 text-right text-sm">
 					<a href="https://github.com/aslanon/liquid-glass-vue">GitHub Repo</a>
 				</p>
@@ -299,6 +337,10 @@ import LiquidGlass from "~/components/LiquidGlass.vue";
 // Container ref for mouse tracking
 const containerRef = ref<HTMLElement>();
 
+// Button click tracking
+const clickCount = ref(0);
+const lastClickedButton = ref<string>("");
+
 // Single settings object that controls both components
 const settings = ref({
 	displacementScale: 70,
@@ -310,8 +352,21 @@ const settings = ref({
 	mode: "standard" as "standard" | "polar",
 });
 
+// Button click handlers
+const handleButtonClick = () => {
+	clickCount.value++;
+	lastClickedButton.value = "Main Button";
+	console.log("Button clicked!");
+};
+
+const handleInlineClick = (buttonName: string) => {
+	clickCount.value++;
+	lastClickedButton.value = buttonName;
+	console.log(`${buttonName} clicked!`);
+};
+
 useHead({
-	title: "Liquid Glass Vue - Simple Demo",
+	title: "Liquid Glass Vue - Button Mode Demo",
 });
 </script>
 

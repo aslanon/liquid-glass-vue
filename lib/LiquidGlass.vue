@@ -3,7 +3,7 @@
 		<!-- Over light effect - React'teki exact pattern -->
 		<div
 			:class="`bg-black transition-all duration-150 ease-in-out pointer-events-none ${
-				props.overLight ? 'opacity-20' : 'opacity-0'
+				props.overLight ? 'opacity-0' : 'opacity-0'
 			}`"
 			:style="{
 				...positionStyles,
@@ -16,7 +16,7 @@
 		/>
 		<div
 			:class="`bg-black transition-all duration-150 ease-in-out pointer-events-none mix-blend-overlay ${
-				props.overLight ? 'opacity-100' : 'opacity-0'
+				props.overLight ? 'opacity-0' : 'opacity-0'
 			}`"
 			:style="{
 				...positionStyles,
@@ -279,7 +279,7 @@
 			</div>
 		</div>
 
-		<!-- Border layer 1 -->
+		<!-- Border layer 1 - extracted from glass container -->
 		<span
 			:style="{
 				...positionStyles,
@@ -299,20 +299,22 @@
 				boxShadow:
 					'0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
 				background: `linear-gradient(
-          ${135 + mouseOffset.x * 1.2}deg,
-          rgba(255, 255, 255, 0.0) 0%,
-          rgba(255, 255, 255, ${
-						0.12 + Math.abs(mouseOffset.x) * 0.008
-					}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-          rgba(255, 255, 255, ${
-						0.4 + Math.abs(mouseOffset.x) * 0.012
-					}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-          rgba(255, 255, 255, 0.0) 100%
-        )`,
+					${135 + mouseOffset.x * 1.2}deg,
+					rgba(255, 255, 255, 0.0) 0%,
+					rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(
+					10,
+					33 + mouseOffset.y * 0.3
+				)}%,
+					rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(
+					90,
+					66 + mouseOffset.y * 0.4
+				)}%,
+					rgba(255, 255, 255, 0.0) 100%
+				)`,
 			}"
 		/>
 
-		<!-- Border layer 2 -->
+		<!-- Border layer 2 - duplicate with mix-blend-overlay -->
 		<span
 			:style="{
 				...positionStyles,
@@ -331,21 +333,23 @@
 				boxShadow:
 					'0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
 				background: `linear-gradient(
-          ${135 + mouseOffset.x * 1.2}deg,
-          rgba(255, 255, 255, 0.0) 0%,
-          rgba(255, 255, 255, ${
-						0.32 + Math.abs(mouseOffset.x) * 0.008
-					}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-          rgba(255, 255, 255, ${
-						0.6 + Math.abs(mouseOffset.x) * 0.012
-					}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-          rgba(255, 255, 255, 0.0) 100%
-        )`,
+					${135 + mouseOffset.x * 1.2}deg,
+					rgba(255, 255, 255, 0.0) 0%,
+					rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(
+					10,
+					33 + mouseOffset.y * 0.3
+				)}%,
+					rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(
+					90,
+					66 + mouseOffset.y * 0.4
+				)}%,
+					rgba(255, 255, 255, 0.0) 100%
+				)`,
 			}"
 		/>
 
-		<!-- Hover effects -->
-		<template v-if="props.onClick">
+		<!-- Hover effects - only show when onClick is provided -->
+		<template v-if="Boolean(props.onClick)">
 			<div
 				:style="{
 					...positionStyles,
@@ -378,17 +382,16 @@
 			/>
 			<div
 				:style="{
-					...baseStyle,
+					...positionStyles,
 					height: glassSize.height + 'px',
 					width: glassSize.width + 1 + 'px',
 					borderRadius: `${props.cornerRadius}px`,
-					position: (baseStyle as any).position,
-					top: (baseStyle as any).top,
-					left: (baseStyle as any).left,
+					transform: baseStyle.transform,
 					pointerEvents: 'none',
 					transition: 'all 0.2s ease-out',
 					opacity: isHovered ? 0.4 : active ? 0.8 : 0,
-					backgroundImage: 'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)',
+					backgroundImage:
+						'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)',
 					mixBlendMode: 'overlay',
 				}"
 			/>
@@ -398,7 +401,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
-import { useLiquidGlass } from "./useLiquidGlass";
 
 interface Props {
 	displacementScale?: number;
@@ -415,7 +417,6 @@ interface Props {
 	style?: Record<string, any>;
 	overLight?: boolean;
 	mode?: "standard" | "polar";
-	positioning?: "fixed" | "relative";
 	onClick?: () => void;
 	onMouseEnter?: () => void;
 	onMouseLeave?: () => void;
@@ -428,14 +429,13 @@ const props = withDefaults(defineProps<Props>(), {
 	blurAmount: 0.0625,
 	saturation: 140,
 	aberrationIntensity: 2,
-	elasticity: 0.5,
+	elasticity: 0.15,
 	cornerRadius: 999,
 	className: "",
 	padding: "24px 32px",
 	overLight: false,
 	style: () => ({}),
 	mode: "standard",
-	positioning: "relative",
 });
 
 const { displacementMap, polarDisplacementMap, generateId, isFirefox } =
@@ -444,11 +444,10 @@ const { displacementMap, polarDisplacementMap, generateId, isFirefox } =
 const glassRef = ref<HTMLElement>();
 const isHovered = ref(false);
 const active = ref(false);
-const glassSize = ref({ width: 120, height: 40 });
+const glassSize = ref({ width: 270, height: 69 });
 const internalGlobalMousePos = ref({ x: 100, y: 100 });
 const internalMouseOffset = ref({ x: 0, y: 0 });
 const filterKey = ref(0);
-const resizeObserver = ref<ResizeObserver | null>(null);
 
 const filterId = generateId();
 console.log("Generated Filter ID:", filterId);
@@ -488,11 +487,10 @@ const backdropStyle = computed(() => {
 	filterKey.value;
 
 	const isFirefoxBrowser =
-		typeof window !== "undefined" &&
-		navigator.userAgent.toLowerCase().includes("firefox");
+		process.client && navigator.userAgent.toLowerCase().includes("firefox");
 	console.log("Firefox detection:", {
 		isFirefoxBrowser,
-		processClient: typeof window !== "undefined",
+		processClient: process.client,
 		filterKey: filterKey.value,
 	});
 
@@ -616,40 +614,27 @@ const calculateElasticTranslation = () => {
 	const pillCenterX = rect.left + rect.width / 2;
 	const pillCenterY = rect.top + rect.height / 2;
 
-	// Mouse hover durumunda daha responsive hareket
-	const responsiveMultiplier = isHovered.value ? 0.15 : 0.1;
-	const elasticityMultiplier = props.elasticity * responsiveMultiplier;
-
 	return {
 		x:
 			(globalMousePos.value.x - pillCenterX) *
-			elasticityMultiplier *
+			props.elasticity *
+			0.1 *
 			fadeInFactor,
 		y:
 			(globalMousePos.value.y - pillCenterY) *
-			elasticityMultiplier *
+			props.elasticity *
+			0.1 *
 			fadeInFactor,
 	};
 };
 
 const transformStyle = computed(() => {
 	const translation = calculateElasticTranslation();
-
-	if (props.positioning === "relative") {
-		return `translate(${translation.x}px, ${translation.y}px) ${
-			active.value && props.onClick
-				? "scale(0.96)"
-				: calculateDirectionalScale()
-		}`;
-	} else {
-		return `translate(calc(-50% + ${translation.x}px), calc(-50% + ${
-			translation.y
-		}px)) ${
-			active.value && props.onClick
-				? "scale(0.96)"
-				: calculateDirectionalScale()
-		}`;
-	}
+	return `translate(calc(-50% + ${translation.x}px), calc(-50% + ${
+		translation.y
+	}px)) ${
+		active.value && props.onClick ? "scale(0.96)" : calculateDirectionalScale()
+	}`;
 });
 
 const baseStyle = computed(() => {
@@ -664,22 +649,11 @@ const baseStyle = computed(() => {
 	};
 });
 
-const positionStyles = computed(() => {
-	if (props.positioning === "relative") {
-		return {
-			position: "relative" as const,
-			top: "auto" as const,
-			left: "auto" as const,
-		};
-	} else {
-		return {
-			position: (baseStyle.value as any).position || ("fixed" as const),
-			top: (baseStyle.value as any).top || "50%",
-			left: (baseStyle.value as any).left || "50%",
-			zIndex: (baseStyle.value as any).zIndex || 50,
-		};
-	}
-});
+const positionStyles = computed(() => ({
+	position: (baseStyle.value as any).position || "relative",
+	top: (baseStyle.value as any).top || "50%",
+	left: (baseStyle.value as any).left || "50%",
+}));
 
 // Internal mouse tracking
 const handleMouseMove = (e: MouseEvent) => {
@@ -705,48 +679,7 @@ const handleMouseMove = (e: MouseEvent) => {
 const updateGlassSize = () => {
 	if (glassRef.value) {
 		const rect = glassRef.value.getBoundingClientRect();
-		const newSize = { width: rect.width, height: rect.height };
-
-		// Sadece boyut gerçekten değiştiyse güncelle
-		if (
-			glassSize.value.width !== newSize.width ||
-			glassSize.value.height !== newSize.height
-		) {
-			glassSize.value = newSize;
-
-			// Relative positioning'de filter'ı yenile
-			if (props.positioning === "relative") {
-				nextTick(() => {
-					filterKey.value++;
-				});
-			}
-		}
-	}
-};
-
-// ResizeObserver setup for relative positioning
-const setupResizeObserver = () => {
-	if (
-		typeof window !== "undefined" &&
-		window.ResizeObserver &&
-		glassRef.value
-	) {
-		resizeObserver.value = new ResizeObserver((entries) => {
-			for (const entry of entries) {
-				const { width, height } = entry.contentRect;
-				const newSize = { width, height };
-
-				if (
-					glassSize.value.width !== newSize.width ||
-					glassSize.value.height !== newSize.height
-				) {
-					glassSize.value = newSize;
-					filterKey.value++;
-				}
-			}
-		});
-
-		resizeObserver.value.observe(glassRef.value);
+		glassSize.value = { width: rect.width, height: rect.height };
 	}
 };
 
@@ -782,7 +715,7 @@ watch(
 		console.log("Props changed, forcing filter refresh...");
 		filterKey.value++; // Force reactivity
 
-		if (typeof window !== "undefined" && glassRef.value) {
+		if (process.client && glassRef.value) {
 			nextTick(() => {
 				const glassElement = glassRef.value?.querySelector(".glass__warp");
 				if (glassElement) {
@@ -805,15 +738,6 @@ onMounted(() => {
 	// Original onMounted logic
 	nextTick(() => {
 		updateGlassSize();
-
-		// Relative positioning için ResizeObserver kullan
-		if (props.positioning === "relative") {
-			setupResizeObserver();
-			// Relative positioning'de daha sık güncelle
-			setTimeout(updateGlassSize, 10);
-			setTimeout(updateGlassSize, 50);
-			setTimeout(updateGlassSize, 100);
-		}
 
 		// Set up mouse tracking if no external mouse position is provided
 		if (!props.globalMousePos && !props.mouseOffset) {
@@ -852,12 +776,6 @@ onMounted(() => {
 
 // Component unmount olduğunda temizle
 onUnmounted(() => {
-	// ResizeObserver'ı temizle
-	if (resizeObserver.value) {
-		resizeObserver.value.disconnect();
-		resizeObserver.value = null;
-	}
-
 	// Original onUnmounted logic
 	if (!props.globalMousePos && !props.mouseOffset) {
 		const container = props.mouseContainer || glassRef.value;
@@ -879,24 +797,6 @@ watch(
 			}
 			if (newContainer) {
 				newContainer.addEventListener("mousemove", handleMouseMove);
-			}
-		}
-	}
-);
-
-// Watch for positioning changes
-watch(
-	() => props.positioning,
-	(newPositioning) => {
-		if (newPositioning === "relative") {
-			nextTick(() => {
-				updateGlassSize();
-				setupResizeObserver();
-			});
-		} else {
-			if (resizeObserver.value) {
-				resizeObserver.value.disconnect();
-				resizeObserver.value = null;
 			}
 		}
 	}
